@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 app.use(  cors({
-    origin: 'http://wolvestalk.commedia.wiki',
+    origin: 'http://wolvestalk.commedia.wiki/',
     credentials: false,
     methods: "Fetch",
   }));
