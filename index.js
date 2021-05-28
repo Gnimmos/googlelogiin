@@ -6,6 +6,7 @@ const OAuth2Data = require('./google_key.json')
 const cookieParser = require('cookie-parser')
 const app = express()
 const cors = require('cors')
+const port = process.env.PORT || 5000;
 
 const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
@@ -269,8 +270,9 @@ app.get('/auth/google/callback', function (req, res) {
     }
 });
 
-const port = process.env.port || 5000
-app.listen(port, () => console.log(`Server running at localhost:${port}`));
+app.listen(port, function () {
+});
+
 
 
         // const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
