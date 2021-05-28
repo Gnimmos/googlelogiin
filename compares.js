@@ -1,0 +1,27 @@
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+
+const router = express.Router();
+
+
+router.get('/', async(req, res) => {
+
+async function readmail() {
+
+ const file = fs.readFile(path.join(__dirname, './mails.json'),
+    (err, result) => {
+      if (err){
+        console.log(err);
+           throw err;
+      }else{
+        res.send(result.toString());
+          console.log(result.toString());
+
+      }
+    });
+  }
+readmail();
+})
+
+module.exports = router;

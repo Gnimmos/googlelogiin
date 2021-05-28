@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="333642631602-h2l1m29lfb5c1d0dta76nvv4so4bjeo4.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <title>Login</title>
+</head>
+<body>
+
+    <button class="g-signin2" onClick="onSignIn()"></div>
+
+    <!-- <a href="#" onclick="signOut();">Sign out</a> -->
+    <script>
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+        console.log('User signed out.');
+        });
+    }
+    </script>
+
+    <script>
+    function onSignIn() {
+        // var profile = googleUser.getBasicProfile();
+        // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        // console.log('Name: ' + profile.getName());
+        // console.log('Image URL: ' + profile.getImageUrl());
+        // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+        // console.log(id_token);
+        console.log('profile')
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/login',true);
+        xhr.onload = function() {
+            var data = JSON.parse(this.response);
+    
+                    if (request.status >= 200 && request.status < 400) {
+
+                        console.log(data);
+                        if(xhr.responseText == 'success'){
+                                signOut();
+
+                                console.log('profile')
+
+                                location.assign('/profile')
+                            }
+                            else                            {
+                                console.log('failed')
+                                console.log(xhr.response)
+
+
+                            }
+                    } 
+                    else {
+                    console.log("error");
+                    }
+           
+        };
+        xhr.send();
+      }
+    </script>
+    
+</body>
+</html>
