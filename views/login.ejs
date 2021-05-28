@@ -42,16 +42,12 @@
                         console.log(data);
                         if(xhr.responseText == 'success'){
                                 signOut();
-
                                 console.log('profile')
-
                                 location.assign('/profile')
                             }
                             else                            {
                                 console.log('failed')
                                 console.log(xhr.response)
-
-
                             }
                     } 
                     else {

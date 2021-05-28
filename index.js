@@ -95,8 +95,6 @@ app.get('/profile',getmail, async(req, res) => {
 })
 
 async function getmail(req, res, next) {
-
-
     let body = {};
     async function getit(){
     const gmail = await google.gmail({ version: 'v1', auth: oAuth2Client });
@@ -151,12 +149,10 @@ async function getmail(req, res, next) {
                                 //     fs.writeFile(path.join(__dirname, './mails.json'), json, 'utf8', function (err) {
                                 //         if (err) return console.log(err);
                                 //             });
-                                // })
-                            
+                                // }) 
                         }
                       });
                 })
-
             }
         });
     }
@@ -193,72 +189,7 @@ function checkAuthenticated(req, res, next){
         .catch(console.error);     
 
 }
-    // var body =[];
 
-    // if (!authed) {
-    //     // Generate an OAuth URL and redirect there
-    //     const url = oAuth2Client.generateAuthUrl({
-    //         access_type: 'offline',
-    //         scope: 'https://www.googleapis.com/auth/gmail.readonly'
-    //     });
-    //     console.log(url)
-    //     res.redirect(url);
-    // } else {
-        
-    //     // getmail(), function(stories) {
-    //     //     console.log(stories);
-    //     // };
-    //     getmail().then(function(gmail) {
-    //         console.log("mails"); // "Success"
-
-    //         console.log(gmail); // "Success"
-    //       }, function(value) {
-    //       });
-
-// getmail = async function(){
-//     const gmail = await google.gmail({ version: 'v1', auth: oAuth2Client });
-//     const body = [];
-
-//     await  gmail.users.messages.list({
-//         'userId': 'me',
-//         'labelIds': 'UNREAD',
-//         'maxResults': 10
-//       }, (err, res) => {
-//             if (err) return console.log('The API returned an error: ' + err);
-//             const  msgs= res.data.messages;
-//             if (msgs.length == 0) {
-//                 console.log('No labels found.');
-
-//             } else {
-//                 console.log('Messages:');
-//                 the_format = 'full';
-//                 for (var i = 0; i < msgs.length; i++) {
-//                   var msg = msgs[i];
-//                  gmail.users.messages.get({
-//                     auth: oAuth2Client,
-//                     userId: 'me',
-//                     id: msg.id,
-//                     payload:msg.payload,
-//                     format: the_format,
-//                   }, function(err, response) {
-//                     if (err) {
-//                        console.log('The API returned an error: ' + err);
-//                        return;
-//                     }
-//                     else{
-//                         console.log("Returning")
-//                         return response.data.payload.parts[0].body.data;
-//                     }
-//                   });
-//                   console.log(body[i])
-
-//                 }  
-//             }
-//         });
-//         console.log(body);
-//         return Promise.all(body,gmail);
-//     }
-// })
 
 app.get('/auth/google/callback', function (req, res) {
     const code = req.query.code
