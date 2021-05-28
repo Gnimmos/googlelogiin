@@ -32,9 +32,18 @@ app.use(express.static('public'));
 app.use(  cors({
     origin: 'http://localhost:3000'+'http://wolvestalk.commedia.wiki',
     credentials: false,
+    methods: "GET",
   }));
   
-
+  router.get('/', function(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,contenttype'); // If needed
+    res.setHeader('Access-Control-Allow-Credentials', true); // If needed
+    
+    res.send('cors problem fixed:)');
+    });
+    
 app.get('/',  (req, res) => {
     if (authed) {
         res.redirect('/profile')
@@ -55,7 +64,7 @@ app.post('/login', (req,res)=>{
                 console.log("redirecting");
                         location()
                         //=> http://the/current/location
-                        location.set('http://localhost:5000/profile')
+                        location.set('http://wolvestalk.commedia.wiki/profile')
                         //=> browser transitions to new location
                 res.end('success')   
             }
