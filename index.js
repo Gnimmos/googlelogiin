@@ -32,7 +32,7 @@ app.use(express.static('public'));
 app.use(  cors({
     origin: 'http://wolvestalk.commedia.wiki',
     credentials: false,
-    methods: "GET",
+    methods: "Fetch",
   }));
   
   app.use(function(req, res, next) {
