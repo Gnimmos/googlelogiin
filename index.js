@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 app.use(  cors({
-    origin: 'http://wolvestalk.commedia.wiki/',
+    origin: 'http://wolvestalk.commedia.wiki/*',
     credentials: false,
     methods: "Fetch",
   }));
@@ -134,14 +134,14 @@ app.get('/profile', async(req,res, next)=>{
                                 
                                     var tosave =  base64.decode(bodyData.replace(/-/g, '+').replace(/_/g, '/'));
                                     var rem1 =  tosave.replace('The message response is','')
-                                    console.log(rem1);
 
                                     var rem2 = rem1.replace('Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]','')
-                                    body.wolf = rem2.split('\n')[2];
-                                    var rest = rem2.split('\n');
+                                    var cat1 = rem2.split('\n')[2];
+                                    var rest = cat1.replace(cat1);
+                                    body.wolf = cat1
+                                    body.says = rest;
 
                                     // console.log(tosave);
-                                    console.log( rest);
 
                                     console.log( body);
 
