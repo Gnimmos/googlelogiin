@@ -88,85 +88,82 @@ app.get('/logout', (req, res)=>{
     res.redirect('/login')
 
 })
-app.get('/profile',getmail, async(req, res) => {
+
+app.get('/profile', async(req,res, next)=>{
+    let wolf, says;
+    let body = {wolf, says};
+    var counter = 0;
+        async function getit(){
+            const gmail = await google.gmail({ version: 'v1', auth: oAuth2Client });
+
+        gmail.users.messages.list({
+            'userId': 'me',
+            'labelIds': 'UNREAD',
+            'maxResults': 10
+        }, (err, res) => {
+                if (err) return console.log('The API returned an error: in first ' + err);
+                const  msgs= res.data.messages;
+                if (msgs.length == 0) {
+                    console.log('No labels found.');
+
+                } else {
+                    console.log('Messages:');
+                    the_format = 'full';
+                    console.log("WE have "+ msgs.length)
+                    var msg = msgs;
+                    msg.map(async(mail)=>{
+                        gmail.users.messages.get({
+                            auth: oAuth2Client,
+                            userId: 'me',
+                            id: mail.id,
+                            payload:mail.payload,
+                            format: the_format,
+                        }, async(err, response)=> {
+                            if (err) {
+                            console.log('The API returned an error: ' + err);
+                            return;
+                            }
+                            else{
+                                var someURLSafeBase64 = response.data.payload.parts[0].body.data;
+                                const messege = URLSafeBase64.decode(someURLSafeBase64); // returns a buffer
 
 
-    res.render('profile');
-})
+                                //  console.log(response.data.payload.parts);
+                                    var bodyData = response.data.payload.parts[0].body.data;
+                                    // Simplified code: you'd need to check for multipart.
+                                
+                                    var tosave =  base64.decode(bodyData.replace(/-/g, '+').replace(/_/g, '/'));
+                                    var rem1 =  tosave.replace('The message response is','')
+                                    console.log(rem1);
 
-async function getmail(req, res, next) {
-    let body = {};
-    async function getit(){
-    const gmail = await google.gmail({ version: 'v1', auth: oAuth2Client });
-     gmail.users.messages.list({
-        'userId': 'me',
-        'labelIds': 'UNREAD',
-        'maxResults': 10
-      }, (err, res) => {
-            if (err) return console.log('The API returned an error: in first ' + err);
-            const  msgs= res.data.messages;
-            if (msgs.length == 0) {
-                console.log('No labels found.');
+                                    var rem2 = rem1.replace('Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]','')
+                                    body.wolf = rem2.split('\n')[2];
+                                    var rest = rem2.split('\n');
 
-            } else {
-                console.log('Messages:');
-                the_format = 'full';
-                console.log("WE have "+ msgs.length)
-                var msg = msgs;
-                msg.map(async(mail)=>{
-                    gmail.users.messages.get({
-                        auth: oAuth2Client,
-                        userId: 'me',
-                        id: mail.id,
-                        payload:mail.payload,
-                        format: the_format,
-                      }, async(err, response)=> {
-                        if (err) {
-                           console.log('The API returned an error: ' + err);
-                           return;
-                        }
-                        else{
-                            var someURLSafeBase64 = response.data.payload.parts[0].body.data;
-                            const messege = URLSafeBase64.decode(someURLSafeBase64); // returns a buffer
+                                    // console.log(tosave);
+                                    console.log( rest);
+
+                                    console.log( body);
 
 
-                              //  console.log(response.data.payload.parts);
-                                var bodyData = response.data.payload.parts[0].body.data;
-                                // Simplified code: you'd need to check for multipart.
+                            }
+                        });
+                    })
+                }
+            });
+            
+        }
+    
 
-                               
-                                var tosave =  base64.decode(bodyData.replace(/-/g, '+').replace(/_/g, '/'));
-                                var rem1 =  tosave.replace('The message response is','')
-                                var rem2 = rem1.replace('Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]','')
-                                console.log(rem2);
-                                var numberOfLineBreaks = (rem2.match(/\n/g)||[]).length;
-                                var characterCount = rem2.length + numberOfLineBreaks;
-                                console.log('Number of breaks:  ' + numberOfLineBreaks);
-                                // fs.readFile('./mails.json', function (err, data) {
-                                //     var json = JSON.parse(data)
-                                //     json.push( rem2 ),
-                                //     console.log(json)
-                                //     fs.writeFile(path.join(__dirname, './mails.json'), json, 'utf8', function (err) {
-                                //         if (err) return console.log(err);
-                                //             });
-                                // }) 
-                        }
-                      });
-                })
-            }
-        });
-    }
     getit().then(()=>{
         console.log(body)
-
-        req.mail = body;
         next();
     })      .catch(err=>{
         res.redirect('/login')
-    })
-  
-}
+    })  
+    res.render('profile');
 
+});
 
 function checkAuthenticated(req, res, next){
 

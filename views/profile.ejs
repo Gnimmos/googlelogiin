@@ -19,7 +19,25 @@
         
         and here we go.
         </textarea>
-        <button> Approve </button>        <button> Delete </button>
+        <button onclick = "show()"> Approve </button>        <button> Delete </button>
+
+    <script>
+        function show() {
+            // var profile = googleUser.getBasicProfile();
+            // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            // console.log('Name: ' + profile.getName());
+            // console.log('Image URL: ' + profile.getImageUrl());
+            // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    
+            // console.log(id_token);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/profile');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            console.log("Button Working!");
+
+          }
+        </script>
 
 </body>
 </html>
