@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 app.use(  cors({
-    origin: 'http://wolvestalk.commedia.wiki/',//http://wolvestalk.commedia.wiki/
+    origin: 'http://wolvestalk.commedia.wiki',//http://wolvestalk.commedia.wiki/
     credentials: false,
     methods: "Fetch",
   }));
@@ -97,7 +97,7 @@ app.get('/logout', (req, res)=>{
 
 app.get('/profile', async(req,res, next)=>{
     let wolf, says;
-    let body = {wolf, says};
+    let body = [[wolf], [says]];
     var counter = 0;
         async function getit(){
             const gmail = await google.gmail({ version: 'v1', auth: oAuth2Client });
@@ -108,7 +108,7 @@ app.get('/profile', async(req,res, next)=>{
             'maxResults': 10
         }, (err, res) => {
                 if (err) return console.log('The API returned an error: in first ' + err);
-                const  msgs= res.data.messages;
+                const  msgs = res.data.messages;
                 if (msgs.length == 0) {
                     console.log('No labels found.');
 
@@ -130,11 +130,8 @@ app.get('/profile', async(req,res, next)=>{
                             return;
                             }
                             else{
-                                var someURLSafeBase64 = response.data.payload.parts[0].body.data;
-                                const messege = URLSafeBase64.decode(someURLSafeBase64); // returns a buffer
-
-
-                                //  console.log(response.data.payload.parts);
+                                    var someURLSafeBase64 = response.data.payload.parts[0].body.data;
+                                    const messege = URLSafeBase64.decode(someURLSafeBase64); // returns a buffer
                                     var bodyData = response.data.payload.parts[0].body.data;
                                     // Simplified code: you'd need to check for multipart.
                                 
@@ -143,20 +140,43 @@ app.get('/profile', async(req,res, next)=>{
 
                                     var rem2 = rem1.replace('Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]','')
                                     var cat1 = rem2.split('\n')[2];
-                                    var rest = cat1.replace(cat1);
-                                    body.wolf = cat1
-                                    body.says = rest;
+                                    var rest = rem2.split('\n').slice(3).join('\n');
+                                    var rest2 = rest.split('\n').slice(1).join('\n');
+                                    body.wolf.push(cat1);
+                                    body.says.push(rest2);
 
-                                    // console.log(tosave);
 
-                                    console.log( body);
+                                // var someURLSafeBase64 = response.data.payload.parts[0].body.data;
+                                // const messege = URLSafeBase64.decode(someURLSafeBase64); // returns a buffer
+
+
+                                // //  console.log(response.data.payload.parts);
+                                //     var bodyData = response.data.payload.parts[0].body.data;
+                                //     // Simplified code: you'd need to check for multipart.
+                                
+                                //     var tosave =  base64.decode(bodyData.replace(/-/g, '+').replace(/_/g, '/'));
+                                //     var rem1 =  tosave.replace('The message response is','')
+
+                                //     var rem2 = rem1.replace('Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]','')
+                                //     var cat1 = rem2.split('\n')[2];
+                                //     var rest = rem2.split('\n').slice(3).join('\n');
+                                //     var rest2 = rest.split('\n').slice(1).join('\n');
+
+                                //     body.wolf = cat1
+                                //     body.says = rest2;
+
+                                //     // console.log(tosave);
+
+                                //   //  console.log( body);
 
 
                             }
                         });
                     })
                 }
+
             });
+
             
         }
     
