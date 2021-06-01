@@ -141,20 +141,13 @@ app.get('/profile', async(req,res, next)=>{
                                     wolf = rem2.split('\n')[2];
                                     var rest = rem2.split('\n').slice(3).join('\n');
                                     says = rest.split('\n').slice(1).join('\n');
-                                    fs.readFile('choosemails.json', 'utf8', function readFileCallback(err, data){
-                                        if (err){
-                                            console.log('An error occured' + err);
-                                        } else {
+
                                         body = JSON.parse(data); //now it an object
                                         body.push({ wolf, says}); //add some data
                                         json = JSON.stringify(body); //convert it back to json
                                         fs.writeFile('choosemails.json', json, 'utf8',function wirtecallback (err) {
                                             if (err)  console.log(err);
                                                 }); // write it back 
-                                    }});
-  
-                                
-                                    
 
                             }
                         });
