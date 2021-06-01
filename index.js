@@ -141,7 +141,8 @@ app.get('/profile', async(req,res, next)=>{
                                     wolf = rem2.split('\n')[2];
                                     var rest = rem2.split('\n').slice(3).join('\n');
                                     says = rest.split('\n').slice(1).join('\n').replace('\n','');
-                                  await   fs.readFile('choosemails.json', 'utf8', function readFileCallback(err, data){
+                                    console.log(says)
+                                        await fs.readFile('choosemails.json',{encoding:'utf-8'}, async function readFileCallback(err, data){
                                         if (err){
                                             console.log('An error occured' + err);
                                         } else {
@@ -150,11 +151,11 @@ app.get('/profile', async(req,res, next)=>{
 
                                         
                                         body.push({ wolf, says}); //add some data
-                                        body.forEach( function( item ) {
+                                        body.forEach( async function( item ) {
                                             var grade = grades[item.wolf] = grades[item.wolf] || {};
                                             grade[item.says];
                                         });
-                                        console.log( JSON.stringify( grades, null, 4 ) );
+                                    //    console.log( JSON.stringify( grades, null, 4 ) );
 
                                         json = JSON.stringify(body); //convert it back to json
                                         fs.writeFile('choosemails.json', json, 'utf8',function wirtecallback (err) {
