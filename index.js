@@ -69,7 +69,7 @@ app.post('/login', (req,res)=>{
                 console.log("redirecting");
                         location()
                         //=> http://the/current/location
-                        location.set('http://wolvestalk.commedia.wiki/profile')
+                        location.set('https://still-island-25722.herokuapp.com/profile')
                         //=> browser transitions to new location
                 res.end('success')   
             }
