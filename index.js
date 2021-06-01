@@ -97,15 +97,14 @@ app.get('/logout', (req, res)=>{
 
 app.get('/profile', async(req,res, next)=>{
     let wolf, says;
-    let body = [[wolf], [says]];
+    let body = {wolf,says};
     var counter = 0;
         async function getit(){
             const gmail = await google.gmail({ version: 'v1', auth: oAuth2Client });
-
         gmail.users.messages.list({
             'userId': 'me',
-            'labelIds': 'UNREAD',
-            'maxResults': 10
+            'labelIds': 'Label_3938912784394729267',
+            'maxResults': 100
         }, (err, res) => {
                 if (err) return console.log('The API returned an error: in first ' + err);
                 const  msgs = res.data.messages;
@@ -139,45 +138,29 @@ app.get('/profile', async(req,res, next)=>{
                                     var rem1 =  tosave.replace('The message response is','')
 
                                     var rem2 = rem1.replace('Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]','')
-                                    var cat1 = rem2.split('\n')[2];
+                                    wolf = rem2.split('\n')[2];
                                     var rest = rem2.split('\n').slice(3).join('\n');
-                                    var rest2 = rest.split('\n').slice(1).join('\n');
-                                    body.wolf.push(cat1);
-                                    body.says.push(rest2);
-
-
-                                // var someURLSafeBase64 = response.data.payload.parts[0].body.data;
-                                // const messege = URLSafeBase64.decode(someURLSafeBase64); // returns a buffer
-
-
-                                // //  console.log(response.data.payload.parts);
-                                //     var bodyData = response.data.payload.parts[0].body.data;
-                                //     // Simplified code: you'd need to check for multipart.
+                                    says = rest.split('\n').slice(1).join('\n');
+                                    fs.readFile('choosemails.json', 'utf8', function readFileCallback(err, data){
+                                        if (err){
+                                            console.log('An error occured' + err);
+                                        } else {
+                                        body = JSON.parse(data); //now it an object
+                                        body.push({ wolf, says}); //add some data
+                                        json = JSON.stringify(body); //convert it back to json
+                                        fs.writeFile('choosemails.json', json, 'utf8',function wirtecallback (err) {
+                                            if (err)  console.log(err);
+                                                }); // write it back 
+                                    }});
+  
                                 
-                                //     var tosave =  base64.decode(bodyData.replace(/-/g, '+').replace(/_/g, '/'));
-                                //     var rem1 =  tosave.replace('The message response is','')
-
-                                //     var rem2 = rem1.replace('Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]','')
-                                //     var cat1 = rem2.split('\n')[2];
-                                //     var rest = rem2.split('\n').slice(3).join('\n');
-                                //     var rest2 = rest.split('\n').slice(1).join('\n');
-
-                                //     body.wolf = cat1
-                                //     body.says = rest2;
-
-                                //     // console.log(tosave);
-
-                                //   //  console.log( body);
-
+                                    
 
                             }
                         });
                     })
                 }
-
-            });
-
-            
+            });         
         }
     
 

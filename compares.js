@@ -9,7 +9,7 @@ router.get('/', async(req, res) => {
 
 async function readmail() {
 
- const file = fs.readFile(path.join(__dirname, './mails.json'),
+ const file = fs.readFile(path.join(__dirname, './choosemails.json'),
     (err, result) => {
       if (err){
         console.log(err);
