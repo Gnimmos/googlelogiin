@@ -6,6 +6,8 @@ const router = express.Router();
 
 
 router.get('/', async(req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://wolvestalk.commedia.wiki/');
+
 
 async function readmail() {
 
