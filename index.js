@@ -97,7 +97,7 @@ app.get('/logout', (req, res)=>{
 
 app.get('/profile', async(req,res, next)=>{
     let wolf, says;
-    let body = {wolf,says};
+    let body = [{wolf,says}];
     var counter = 0;
         async function getit(){
             const gmail = await google.gmail({ version: 'v1', auth: oAuth2Client });
