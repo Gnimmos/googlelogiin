@@ -140,13 +140,22 @@ app.get('/profile', async(req,res, next)=>{
                                     var rem2 = rem1.replace('Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]','')
                                     wolf = rem2.split('\n')[2];
                                     var rest = rem2.split('\n').slice(3).join('\n');
-                                    says = rest.split('\n').slice(1);
+                                    says = rest.split('\n').slice(1).join('\n').replace('\n','');
                                   await   fs.readFile('choosemails.json', 'utf8', function readFileCallback(err, data){
                                         if (err){
                                             console.log('An error occured' + err);
                                         } else {
                                         body = JSON.parse(data); //now it an object
+                                        var grades = {};
+
+                                        
                                         body.push({ wolf, says}); //add some data
+                                        body.forEach( function( item ) {
+                                            var grade = grades[item.wolf] = grades[item.wolf] || {};
+                                            grade[item.says];
+                                        });
+                                        console.log( JSON.stringify( grades, null, 4 ) );
+
                                         json = JSON.stringify(body); //convert it back to json
                                         fs.writeFile('choosemails.json', json, 'utf8',function wirtecallback (err) {
                                             if (err)  console.log(err);
