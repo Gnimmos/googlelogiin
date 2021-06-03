@@ -100,8 +100,8 @@ app.get('/profile', async(req,res, next)=>{
 
     var counter = 0;
         async function getit(){
-            let wolf, says;
-            let jsonbody = [wolf,says];
+            let wolf="Your", says="Saying";
+            let body = [wolf,says];
 
             const gmail = await google.gmail({ version: 'v1', auth: oAuth2Client });
             return  gmail.users.messages.list({
@@ -133,34 +133,39 @@ app.get('/profile', async(req,res, next)=>{
                             return;
                             }
                             else{
-                                    var someURLSafeBase64 = response.data.payload.parts[0].body.data;
-                                    const messege = URLSafeBase64.decode(someURLSafeBase64); // returns a buffer
-                                    var bodyData = response.data.payload.parts[0].body.data;
-                                    // Simplified code: you'd need to check for multipart.
-                                
-                                    var tosave =  base64.decode(bodyData.replace(/-/g, '+').replace(/_/g, '/'));
-                                    var rem1 =  tosave.replace('The message response is','')
-
-                                    var rem2 = rem1.replace('Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]','')
-                                    wolf = rem2.split('\n')[2];
-                                    var rest = rem2.split('\n').slice(3).join('\n');
-                                    says = rest.split('\n').slice(1).join('\n').replace('\n','');
-
-                                        
-                                    jsonbody.push({ wolf, says}); //add some data
-                                        console.log("Body")
-
-                                        console.log(json)
-                                      var  json = JSON.stringify(jsonbody); //convert it back to json
-
-                                        fs.writeFile('choosemails.json', json, 'utf8',function wirtecallback (err) {
-                                            if (err) { console.log(err);}
-                                            else{
-
-                                            }
-                                                }); // write it back 
-
-                                                return jsonbody;
+                                var someURLSafeBase64 =
+                                response.data.payload.parts[0].body.data;
+                              const messege = URLSafeBase64.decode(someURLSafeBase64); // returns a buffer
+                              var bodyData = response.data.payload.parts[0].body.data;
+                              // Simplified code: you'd need to check for multipart.
+            
+                              var tosave = base64.decode(
+                                bodyData.replace(/-/g, "+").replace(/_/g, "/")
+                              );
+                              var rem1 = tosave.replace("The message response is", "");
+            
+                              var rem2 = rem1.replace(
+                                "Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]",
+                                ""
+                              );
+                              wolf = rem2.split("\n")[2];
+                              var rest = rem2.split("\n").slice(3).join("\n");
+                              says = rest.split("\n").slice(1).join("\n").replace("\n", "");
+            
+                              body.push({ wolf, says }); //add some data
+                              console.log("Body:");
+            
+                              console.log(body);
+                              var filtered = body.filter(function (el) {
+                                return el != null;
+                              });
+                              let json = JSON.stringify(filtered); //convert it back to json
+                              fs.writeFile('choosemails.json', json, 'utf8',function wirtecallback (err) {
+                                      if (err)  console.log(err);
+                                          }); // write it back 
+                              
+            
+                              return body;
 
                             }
                         });
