@@ -142,14 +142,14 @@ app.get('/profile', async(req,res, next)=>{
                               var tosave = base64.decode(
                                 bodyData.replace(/-/g, "+").replace(/_/g, "/")
                               );
-                              var remlink = tosave.replace("Follow this link after approval:https://still-island-25722.herokuapp.com/","")
+                              var remlink = tosave.replace("Foll    ow this link after approval:https://still-island-25722.herokuapp.com/","")
                               var rem1 = remlink.replace("The message response is", "");
             
                               var rem2 = rem1.replace(
                                 "Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]",
                                 ""
                               );
-                              wolf = rem2.split("\n")[2];
+                              wolf = rem2.split("\n")[3];
                               var rest = rem2.split("\n").slice(3).join("\n");
                               says = rest.split("\n").slice(1).join("\n").replace("\n", "");
             
