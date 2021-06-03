@@ -142,7 +142,8 @@ app.get('/profile', async(req,res, next)=>{
                               var tosave = base64.decode(
                                 bodyData.replace(/-/g, "+").replace(/_/g, "/")
                               );
-                              var rem1 = tosave.replace("The message response is", "");
+                              var remlink = tosave.replace("Follow this link after approval:https://still-island-25722.herokuapp.com/","")
+                              var rem1 = remlink.replace("The message response is", "");
             
                               var rem2 = rem1.replace(
                                 "Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]",
