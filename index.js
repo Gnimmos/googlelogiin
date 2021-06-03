@@ -149,7 +149,7 @@ app.get('/profile', async(req,res, next)=>{
                                 "Email sent via EmailJS.com [https://www.emailjs.com?src=email-footer]",
                                 ""
                               );
-                              wolf = rem2.split("\n")[3];
+                              wolf = rem2.split("\n")[2];
                               var rest = rem2.split("\n").slice(3).join("\n");
                               says = rest.split("\n").slice(1).join("\n").replace("\n", "");
             
