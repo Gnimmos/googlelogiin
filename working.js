@@ -24,7 +24,6 @@ var authed = false;
 
 const fs = require('fs');
 const path = require('path');
-const { json } = require('express');
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -97,14 +96,12 @@ app.get('/logout', (req, res)=>{
 })
 
 app.get('/profile', async(req,res, next)=>{
-
+    let wolf, says;
+    let body = {wolf,says};
     var counter = 0;
         async function getit(){
-            let wolf, says;
-            let jsonbody = [wolf,says];
-
             const gmail = await google.gmail({ version: 'v1', auth: oAuth2Client });
-            return  gmail.users.messages.list({
+        gmail.users.messages.list({
             'userId': 'me',
             'labelIds': 'Label_3938912784394729267',
             'maxResults': 100
@@ -118,9 +115,8 @@ app.get('/profile', async(req,res, next)=>{
                     console.log('Messages:');
                     the_format = 'full';
                     console.log("WE have "+ msgs.length)
-
                     var msg = msgs;
-                    return  msg.map(async(mail)=>{
+                    msg.map(async(mail)=>{
                         gmail.users.messages.get({
                             auth: oAuth2Client,
                             userId: 'me',
@@ -145,37 +141,37 @@ app.get('/profile', async(req,res, next)=>{
                                     wolf = rem2.split('\n')[2];
                                     var rest = rem2.split('\n').slice(3).join('\n');
                                     says = rest.split('\n').slice(1).join('\n').replace('\n','');
+                                    console.log(says)
+                                        await fs.readFile('choosemails.json',{encoding:'utf-8'}, async function readFileCallback(err, data){
+                                        if (err){
+                                            console.log('An error occured' + err);
+                                        } else {
+                                        body = JSON.parse(data); //now it an object
+                                        var grades = {};
 
                                         
-                                    jsonbody.push({ wolf, says}); //add some data
-                                        console.log("Body")
+                                        body.push({ wolf, says}); //add some data
+                                        body.forEach( async function( item ) {
+                                            var grade = grades[item.wolf] = grades[item.wolf] || {};
+                                            grade[item.says];
+                                        });
+                                    //    console.log( JSON.stringify( grades, null, 4 ) );
 
-                                        console.log(json)
-                                      var  json = JSON.stringify(jsonbody); //convert it back to json
-
-                                        fs.writeFile('choosemails.json', json, 'utf8',function wirtecallback (err) {
-                                            if (err) { console.log(err);}
-                                            else{
-
-                                            }
+                                    json = JSON.stringify(body); //convert it back to json
+                                    fs.writeFile('choosemails.json', json, 'utf8',function wirtecallback (err) {
+                                            if (err)  console.log(err);
                                                 }); // write it back 
-
-                                                return jsonbody;
-
+                                    }});
                             }
                         });
                     })
                 }
-
-
             });         
-
         }
     
 
-    getit().then((res) => {
-        console.log("Mails:");
-        console.log(res);
+    getit().then(()=>{
+        console.log(body)
         next();
     })      .catch(err=>{
         res.redirect('/login')
