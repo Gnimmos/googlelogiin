@@ -259,7 +259,7 @@ app.get('/profile', async(req,res, next)=>{
                           wolf = rem2.split("\n")[5];
                           var rest = rem2.split("\n").slice(5).join("\n");
                           says = rest.split("\n").slice(2).join("\n").replace("\n", "");
-                          say = says.replace(/'/,"\'")
+                          say = says.replace(/'/g,"\'")
                           body.push({ wolf, says }); //add some data
                           console.log("Body:");
         
