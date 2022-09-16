@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "deploy": "node ftp.js"
+
   },
   "author": "",
   "license": "ISC",
@@ -23,5 +25,8 @@
     "react-bootstrap-table-next": "^4.0.3",
     "urlsafe-base64": "^1.0.0",
     "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {
+    "ftp-deploy": "^2.4.3"
   }
 }
